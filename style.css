@@ -1,0 +1,330 @@
+:root {
+    --bg-color: #000000;
+    --panel-bg: #000033;
+    --text-primary: #e0e0ff;
+    --text-secondary: #a0a0c0;
+    --accent-color: #8a2be2; /* BlueViolet */
+    --accent-glow: #9d4edd;
+    --border-color: #333366;
+    --card-bg: rgba(0, 0, 50, 0.6);
+    --card-hover-bg: rgba(0, 0, 80, 0.7);
+    --transition-speed: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: 'Courier New', monospace;
+    overflow-x: hidden;
+    position: relative;
+    height: 100vh;
+}
+
+/* CRT overlay effects */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.1),
+            rgba(0, 0, 0, 0.1) 1px,
+            transparent 1px,
+            transparent 2px
+        ),
+        radial-gradient(circle at center, rgba(10, 0, 30, 0.4) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 1000;
+}
+
+/* Scanning lines */
+body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.05) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    animation: scanLines 8s linear infinite;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+@keyframes scanLines {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100vh; }
+}
+
+/* System Panel */
+#system-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--panel-bg);
+    border-bottom: 1px solid var(--border-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+#logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--accent-glow);
+}
+
+#language-switcher {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#language-switcher button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 0.25rem 0.5rem;
+    cursor: pointer;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+#language-switcher button:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+#language-switcher button.active {
+    background-color: var(--accent-color);
+    color: var(--bg-color);
+}
+
+/* Main Content */
+#main-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 2rem;
+    position: relative;
+    top: -4rem; /* Adjust for fixed panel */
+}
+
+#title h1 {
+    font-size: 4rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, var(--accent-color), var(--accent-glow));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 10px var(--accent-glow);
+    font-family: 'Arial', sans-serif;
+}
+
+#title h2 {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+/* Social Cards */
+#social-cards {
+    display: flex;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.social-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all var(--transition-speed);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transform: rotate(45deg);
+    transition: all var(--transition-speed);
+}
+
+.social-card:hover::before {
+    top: -100%;
+    left: -100%;
+}
+
+.social-card:hover {
+    background: var(--card-hover-bg);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.social-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    filter: brightness(0) invert(1);
+    transition: filter var(--transition-speed);
+}
+
+.social-card:hover img {
+    filter: drop-shadow(0 0 5px var(--accent-color));
+}
+
+.social-card span {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    text-align: center;
+    width: 100%;
+}
+
+/* Custom Cursor */
+#custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    transition: width 0.1s, height 0.1s, border-color 0.1s;
+    z-index: 9999;
+}
+
+#custom-cursor.hover {
+    width: 30px;
+    height: 30px;
+    background-color: rgba(138, 43, 226, 0.2);
+    border-color: var(--accent-glow);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #title h1 {
+        font-size: 2.5rem;
+    }
+
+    #title h2 {
+        font-size: 1.2rem;
+    }
+
+    #social-cards {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .social-card {
+        width: 100px;
+    }
+
+    #system-panel {
+        padding: 0.5rem 1rem;
+    }
+
+    #logo {
+        font-size: 1.2rem;
+    }
+
+    #language-switcher button {
+        padding: 0.2rem 0.4rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #title h1 {
+        font-size: 2rem;
+    }
+
+    #title h2 {
+        font-size: 1rem;
+    }
+
+    #social-cards {
+        gap: 1rem;
+    }
+
+    .social-card {
+        width: 80px;
+        padding: 1rem;
+    }
+
+    .social-card img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .social-card span {
+        font-size: 0.8rem;
+    }
+}
+
+/* Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+    body::after {
+        animation: none;
+        background: repeating-linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.05),
+            rgba(0, 0, 0, 0.05) 1px,
+            transparent 1px,
+            transparent 2px
+        );
+    }
+
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+
+    #custom-cursor {
+        transition: none;
+    }
+
+    .social-card {
+        transition: none;
+    }
+
+    .social-card:hover {
+        transform: none;
+    }
+}
